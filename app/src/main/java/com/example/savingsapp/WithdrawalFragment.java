@@ -1,10 +1,9 @@
 package com.example.savingsapp;
 
+// Import necessary classes and packages
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,13 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class WithdrawalFragment extends Fragment {
-    Context context;
+    Context context; // Context variable
 
     public WithdrawalFragment() {
         // Required empty public constructor
     }
 
+    // Static method to create a new instance of WithdrawalFragment with context
     public static WithdrawalFragment newInstance(Context context) {
         WithdrawalFragment fragment = new WithdrawalFragment();
         fragment.context = context;
@@ -30,6 +30,7 @@ public class WithdrawalFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // No specific actions needed on fragment creation for now
     }
 
     @Override

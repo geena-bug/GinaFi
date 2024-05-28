@@ -11,33 +11,33 @@ import com.example.savingsapp.db.dao.UserDao;
 import com.example.savingsapp.db.entities.TransactionHistory;
 import com.example.savingsapp.db.entities.User;
 
-@Database(entities = {User.class, TransactionHistory.class}, version = 2)
+@Database(entities = {User.class, TransactionHistory.class}, version = 2) // Annotation to define the database and its entities
 public abstract class AppDatabase extends RoomDatabase {
 
     /**
-        * The database instance
+     * The database instance
      */
-    private static volatile AppDatabase INSTANCE;
+    private static volatile AppDatabase INSTANCE; // Volatile instance of the database to ensure thread safety
 
     /**
      * The database name
      */
-    private static final String dbName = "gina_fi_db";
+    private static final String dbName = "gina_fi_db"; // Name of the database
 
     /**
      * Get the database instance
      * @param context The context
      * @return The database instance
      */
-    public static AppDatabase getInstance(Context context){
+    public static AppDatabase getInstance(Context context) {
         // If the instance is null, create a new instance
-        if(INSTANCE == null){
+        if (INSTANCE == null) {
             // Synchronize the instance creation
-            synchronized (AppDatabase.class){
+            synchronized (AppDatabase.class) {
                 // If the instance is still null, create a new instance
-                if(INSTANCE == null){
+                if (INSTANCE == null) {
                     // Create the database instance
-                    INSTANCE =  Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, AppDatabase.dbName).build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, AppDatabase.dbName).build();
                 }
             }
         }
@@ -49,11 +49,11 @@ public abstract class AppDatabase extends RoomDatabase {
      * Get the user DAO (Data Access Object)
      * @return The user dao
      */
-    public abstract UserDao userDao();
+    public abstract UserDao userDao(); // Abstract method to get the UserDao
 
     /**
      * Get the transactions DAO (Data Access Object)
      * @return The transactions dao
      */
-    public abstract TransactionsDao transactionsDao();
+    public abstract TransactionsDao transactionsDao(); // Abstract method to get the TransactionsDao
 }

@@ -1,12 +1,11 @@
 package com.example.savingsapp.fragments;
 
+// Import necessary classes and packages
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,41 +13,39 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.savingsapp.R;
-import com.example.savingsapp.SaveFragment;
 import com.example.savingsapp.adapters.SavingsActivityAdapter;
-import com.example.savingsapp.data.SavingsData;
 import com.example.savingsapp.db.entities.TransactionHistory;
 import com.example.savingsapp.db.entities.User;
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
 public class HomeFragment extends BaseFragment {
 
+    // Declare UI components
     TextView helloMessage;
     RecyclerView activitiesRecyclerView;
     View view;
 
-    Context context;
+    Context context; // Context variable
 
-    User user;
+    User user; // User variable
 
-    CircleImageView profileImage;
-    TextView textViewTotalWithdrawals;
-    TextView totalSavings;
+    CircleImageView profileImage; // Profile image view
+    TextView textViewTotalWithdrawals; // TextView for total withdrawals
+    TextView totalSavings; // TextView for total savings
 
-    int totalNoWithdrawals = 0;
+    int totalNoWithdrawals = 0; // Variable to store total number of withdrawals
 
-    ArrayList<TransactionHistory> activitiesList = new ArrayList<>();
+    ArrayList<TransactionHistory> activitiesList = new ArrayList<>(); // List to store transaction history
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
+    // Static method to create a new instance of HomeFragment with context
     public static HomeFragment newInstance(Context context) {
         HomeFragment fragment = new HomeFragment();
         fragment.context = context;
@@ -58,54 +55,57 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initAppDb(context);
-        getDataFromDB();
+        initAppDb(context); // Initialize the app database
+        getDataFromDB(); // Retrieve data from the database
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view =  inflater.inflate(R.layout.fragment_home, container, false);
-        initViews();
-        loadProfileImage();
-        initRecyclerView();
+        view = inflater.inflate(R.layout.fragment_home, container, false);
+        initViews(); // Initialize views
+        loadProfileImage(); // Load the profile image
+        initRecyclerView(); // Initialize the RecyclerView
         return view;
     }
 
-    void initViews(){
-        helloMessage = view.findViewById(R.id.hello_message);
-        textViewTotalWithdrawals = view.findViewById(R.id.total_withdrawals);
-        totalSavings = view.findViewById(R.id.total_savings);
+    // Method to initialize views
+    void initViews() {
+        helloMessage = view.findViewById(R.id.hello_message); // Initialize hello message TextView
+        textViewTotalWithdrawals = view.findViewById(R.id.total_withdrawals); // Initialize total withdrawals TextView
+        totalSavings = view.findViewById(R.id.total_savings); // Initialize total savings TextView
 
-        //set the user name
+        // Set the user name in hello message
         helloMessage.setText(getString(R.string.hello_message, user.firstName));
-        //set the total savings
+        // Set the total savings amount
         totalSavings.setText(getString(R.string.amount, user.accountBalance));
-        //set the total withdrawals
+        // Set the total number of withdrawals
         textViewTotalWithdrawals.setText(getString(R.string.total_withdrawal, totalNoWithdrawals));
     }
 
-    void initRecyclerView(){
-        activitiesRecyclerView = view.findViewById(R.id.activities);
-        activitiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        activitiesRecyclerView.setAdapter(new SavingsActivityAdapter(activitiesList));
+    // Method to initialize the RecyclerView
+    void initRecyclerView() {
+        activitiesRecyclerView = view.findViewById(R.id.activities); // Initialize RecyclerView
+        activitiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext())); // Set layout manager
+        activitiesRecyclerView.setAdapter(new SavingsActivityAdapter(activitiesList)); // Set adapter
     }
 
-    void getDataFromDB(){
+    // Method to retrieve data from the database
+    void getDataFromDB() {
         runInBackground(() -> {
-            activitiesList = (ArrayList<TransactionHistory>) appDatabase.transactionsDao().getAll();
-            user = appDatabase.userDao().getById(1);
-            totalNoWithdrawals = appDatabase.transactionsDao().getTotalNoOfTransactionsByType(TransactionHistory.TYPE_WITHDRAW);
+            activitiesList = (ArrayList<TransactionHistory>) appDatabase.transactionsDao().getAll(); // Get all transaction history
+            user = appDatabase.userDao().getById(1); // Get user by ID
+            totalNoWithdrawals = appDatabase.transactionsDao().getTotalNoOfTransactionsByType(TransactionHistory.TYPE_WITHDRAW); // Get total number of withdrawals
         });
     }
 
-    void loadProfileImage(){
-        if(user.photoUrl == null || user.photoUrl.isEmpty()){
-            return;
+    // Method to load the profile image
+    void loadProfileImage() {
+        if (user.photoUrl == null || user.photoUrl.isEmpty()) {
+            return; // Return if photo URL is null or empty
         }
-        profileImage = view.findViewById(R.id.photo);
-        Log.d("userPhotoPath", user.photoUrl);
-        Picasso.get().load(user.photoUrl).into(profileImage);
+        profileImage = view.findViewById(R.id.photo); // Initialize profile image view
+        Log.d("userPhotoPath", user.photoUrl); // Log the photo URL
+        Picasso.get().load(user.photoUrl).into(profileImage); // Load the photo URL into the profile image view using Picasso
     }
 }
