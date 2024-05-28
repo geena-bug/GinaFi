@@ -120,7 +120,7 @@ public class PhotoActivity extends BaseActivity implements View.OnClickListener{
         try (FileOutputStream out = new FileOutputStream(file)) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
             // PNG is a lossless format, the compression factor (100) is ignored
-            out.flush();
+            out.flush(); //this clears the memory after file creation
             MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
         } catch (IOException e) {
             e.printStackTrace();
